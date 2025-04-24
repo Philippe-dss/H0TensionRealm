@@ -9,32 +9,33 @@ black = [0,0,0]
 red   = [1,0,0]
 blue  = [0,0,1]
 colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
-          '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+          '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+          'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9',]
 
 
 unique_labels = [
     '\\textbf{CMB with Planck}',
     '\\textbf{CMB without Planck}',
-    '\\textbf{Cepheids-SNIa}',
-    '\\textbf{GW related}',
-    '\\textbf{HII galaxies}',
-    '\\textbf{Lensing related; mass model-dependent}',
-    '\\textbf{Masers}',
-    '\\textbf{Miras-SNIa}',
     '\\textbf{No CMB; with BBN}',
-    '\\textbf{Optimistic average}',
-    '\\textbf{Pl(k) + CMB lensing}',
-    '\\textbf{SNII}',
-    '\\textbf{Surface Brightness Fluctuations}',
-    '\\textbf{TRGB-SNIa}',
+    #'\\textbf{Pl(k) + CMB lensing}',
+    '\\textbf{Cepheids-SNIa}',
+    '\\textbf{TRGB, SN-Ia}',
+    '\\textbf{Mira stars, SN-Ia}',
+    '\\textbf{Masers}',
     '\\textbf{Tully-Fisher Relation}',
-    '\\textbf{Ultra Conservative - no cepheids no lensing}',
+    '\\textbf{Surface Brightness Fluctuations}',
+    '\\textbf{SNII}',
+    #'\\textbf{HII galaxies}',
+    #'\\textbf{Lensing related; mass model-dependent}',
+    #'\\textbf{Optimistic average}',
+    #'\\textbf{Ultra Conservative - no cepheids no lensing}',
+    '\\textbf{GW related}',
     ]
 
 #+++++++++++++++++++++++++++++
 from matplotlib import rcParams
 config = {
-	"mathtext.fontset":'stix',
+	#"mathtext.fontset":'stix',
     'font.family':'Times New Roman',
     'text.usetex': True,
     #'text.latex.preamble': r'\usepackage{amsmath}\boldmath',
@@ -128,7 +129,7 @@ class ErrorLinePloter:
 ### Repository containing the .csv with the dataset
 ### See README for more info on the structure
 data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
-fil = os.path.join(data_path, 'dataset.csv')
+fil = os.path.join(data_path, 'dataset2.csv')
 
 ### Load the dataset and count the number of data points
 nr=1
@@ -176,16 +177,16 @@ for i in range(nr):
 aut = ["" for x in range(nr)]
 for i in range(nr):
     if etal[i]=='Y':
-      aut[i] = auth[i]+' et al. ('+str(year[i])+'),'
+      aut[i] = auth[i]+' et al. ('+str(year[i])+')'
     else:
-      aut[i] = auth[i]+' ('+str(year[i])+'),'
+      aut[i] = auth[i]+' ('+str(year[i])+')'
 
 paras=[]
 for i in range(nr):
     if Hl[i]==Hp[i]:
-        paras.append(aut[i]+' '+str(H0[i])+'${\pm}$'+str(Hp[i]))
+        paras.append(aut[i])#+' '+str(H0[i])+'${\pm}$'+str(Hp[i]))
     else:
-        paras.append(aut[i]+' '+str(H0[i])+'$^{+'+str(Hp[i])+'}_{-'+str(Hl[i])+'}$')
+        paras.append(aut[i])#+' '+str(H0[i])+'$^{+'+str(Hp[i])+'}_{-'+str(Hl[i])+'}$')
 
 #---------------------------data-------------------------------------
 all_data = []
@@ -292,24 +293,26 @@ for tick, label in zip(yticklabels, tick_label):
     if '20' not in label:
         # change the colour to white:
         tick.set_color('k')
-        tick.set_fontsize(5)
+        tick.set_fontsize(6)
     
     #if 'textbf' in label:
     
         #tick.set_fontsize(0.0)
     else:
-        tick.set_fontsize(3)
+        tick.set_fontsize(6)
 plt.gca().set_yticklabels(yticklabels)
 
 plt.text(77.5,direct_position+1.,"Indirect",size=9)
 plt.text(77.5,direct_position-1.8,"Direct",size=9)
 plt.text(74.7,pos_num-3,"${H_0}\,$\n[km$\,$s$^{-1}\,$Mpc$^{-1}$]",size=10)
 
-### Plot the vertical bars for reference: R20 vs CMB
-plt.bar(73.2, 100, width=2.6, facecolor = 'cyan', alpha = 0.15)
+### Plot the vertical bars for reference: R22 vs CMB
+plt.bar(73.04, 100, width=1.04*2, facecolor = 'cyan', alpha = 0.15)
 plt.bar(67.27, 100, width=1.2, facecolor = 'pink', alpha = 0.25)
 
 plt.minorticks_off()
 plt.tight_layout()
 pdf.savefig()
 pdf.close()
+
+print( np.log(3e5 / 700) )
